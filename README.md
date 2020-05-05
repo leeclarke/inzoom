@@ -1,7 +1,7 @@
 # inzoom
 A quick Zoom IN Meeting Monitor for use with an Raspberry Pi.  There  are already a bunch of there out there I am sure but I like groovy so I threw together a quick version for my own amusement and personal comfort!
 
-I wrote this script to call a Ras-Pi and trigger a little REST endpoint to toggle an on the air light.  On the Rasp-Pi I'm using the service mentione dhere in [Easyprogramming's](https://aiim.easyprogramming.net/) great write up on how to do this.
+I wrote this script to call a Ras-Pi and trigger a little REST endpoint to toggle an on the air light.  I also added a small API to be installed on the Raspberry-pi to trigger the on air lite.  All written in Java
 
 To Run the script
 -----------------
@@ -14,3 +14,8 @@ Scheduling the Script
 ---------------------
 
 tbd
+
+Installing the API
+------------------
+
+coming
