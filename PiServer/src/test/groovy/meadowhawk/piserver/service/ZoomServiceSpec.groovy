@@ -12,7 +12,7 @@ class ZoomServiceSpec  extends Specification{
         given:
             ZoomService zoomService = new ZoomService()
             ZoomCallStats call1 = new ZoomCallStats()
-            call1.endCall(LocalDateTime.now().plusMinutes(20))
+            call1.endCall(LocalDateTime.now().plusMinutes(20).plusHours(1).plusSeconds(42))
             ZoomCallStats call2 = (new ZoomCallStats())
             call2.endCall(LocalDateTime.now().plusMinutes(10))
             zoomService.zoomStatsLog = [call1, call2]
@@ -22,6 +22,6 @@ class ZoomServiceSpec  extends Specification{
             assert jsonStr != null
 
             def json = (new JsonSlurper()).parseText(jsonStr)
-            assert json[0].totalTime == "20:20"
+            assert json[0].totalTime == "1:20:42"
     }
 }

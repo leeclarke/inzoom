@@ -4,11 +4,13 @@ import groovy.json.JsonGenerator
 import groovy.util.logging.Slf4j
 import jdk.jfr.Frequency
 import meadowhawk.piserver.model.ZoomCallStats
+import static  meadowhawk.piserver.util.DurationUtil.*
 import spark.Request
 
 import java.time.Duration
 import java.time.LocalDateTime
 
+import static java.time.LocalTime.MINUTES_PER_HOUR
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME
 
 @Slf4j
@@ -27,7 +29,7 @@ class ZoomService {
         def status = (request.queryParams().contains(STATUS))? request.queryParamsValues(STATUS): "off"
         if(status.contains("on")){
             log.info("Status=ON")
-            if(currentCall) endCall()
+            endCall()
             currentCall = new ZoomCallStats()
 
             gipoService.toggleLED(true)
@@ -38,10 +40,11 @@ class ZoomService {
     }
 
     def endCall(){
-        currentCall.endCall()
-        zoomStatsLog.add(currentCall)
-        currentCall == null
-
+        if(currentCall) {
+            currentCall.endCall()
+            zoomStatsLog.add(currentCall)
+            currentCall == null
+        }
         gipoService.toggleLED(false)
     }
 
@@ -49,7 +52,7 @@ class ZoomService {
             .addConverter(LocalDateTime) {
                 it.format(ISO_LOCAL_DATE_TIME)
             }.addConverter(Duration) {
-                "${it.toMinutes()}:${it.toMinutes()}"
+                "${toHoursPart(it)}:${toMinutesPart(it)}:${toSecondsPart(it)}"
             }
             .build()
 }
