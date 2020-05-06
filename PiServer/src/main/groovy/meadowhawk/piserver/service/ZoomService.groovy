@@ -29,10 +29,12 @@ class ZoomService {
         def status = (request.queryParams().contains(STATUS))? request.queryParamsValues(STATUS): "off"
         if(status.contains("on")){
             log.info("Status=ON")
-            endCall()
-            currentCall = new ZoomCallStats()
-
-            gipoService.toggleLED(true)
+            if(!currentCall) {
+                currentCall = new ZoomCallStats()
+                gipoService.toggleLED(true)
+            } else {
+                log.trace("Call already started")
+            }
         } else { //Disable led
             log.info("Status=OFF")
             endCall()
