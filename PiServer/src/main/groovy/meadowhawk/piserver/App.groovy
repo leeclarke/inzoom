@@ -7,7 +7,7 @@ import meadowhawk.piserver.service.ZoomService
 
 class App {
     static String getGreeting() {
-        return 'Welcome to Zoom Status API '
+        return 'Welcome to Zoom Status API v1.0'
     }
 
     static final String JSON_TYPE = "application/json"

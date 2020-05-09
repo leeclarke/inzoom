@@ -3,6 +3,7 @@ package meadowhawk.piserver.service
 import com.pi4j.io.gpio.GpioController
 import com.pi4j.io.gpio.GpioFactory
 import com.pi4j.io.gpio.GpioPinDigitalOutput
+import com.pi4j.io.gpio.PinState
 import com.pi4j.io.gpio.RaspiPin
 import groovy.util.logging.Slf4j
 import meadowhawk.piserver.util.GpioControllerStub
@@ -17,7 +18,7 @@ class GIPOService {
     GIPOService(){
         try{
             gpio = GpioFactory.getInstance()
-            pin = gpio.provisionDigitalOutputPin(RaspiPin.getPinByAddress(8))
+            pin = gpio.provisionDigitalOutputPin(RaspiPin.getPinByAddress(4))
             pin.setShutdownOptions(true, PinState.LOW);
         } catch(Throwable e){
             log.warn("Starting server with GIPO disbled! /n Error: ${e}")

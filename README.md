@@ -18,4 +18,8 @@ tbd
 Installing the API
 ------------------
 
-coming
+If your cloning and building the api locally then the deployment is pretty simple and can be done from the command line.
+
+1. Run ```./gradlew build fatjar```
+2. Load to your R-pi  ```` scp build/libs/PiServer.jar pi@<Pi-ip>>:~/webapps ````
+3. SSH to your Pi and run ```` java -jar webapps/PiServer.jar &````
