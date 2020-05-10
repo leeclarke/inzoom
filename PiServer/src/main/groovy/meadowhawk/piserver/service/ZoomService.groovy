@@ -2,6 +2,7 @@ package meadowhawk.piserver.service
 
 import groovy.json.JsonGenerator
 import groovy.util.logging.Slf4j
+import meadowhawk.piserver.model.CallSummary
 import meadowhawk.piserver.model.ZoomCallStats
 import static  meadowhawk.piserver.util.DurationUtil.*
 import spark.Request
@@ -19,7 +20,9 @@ class ZoomService {
     GIPOService gipoService = new GIPOService()
 
     String getStatusInfo(){
-        jsonGen.toJson(zoomStatsLog)  //TODO: Expand results to included total time and maybe an HTML output option
+        def totalTime = zoomStatsLog.sum({ it.totalTime})
+        CallSummary callSummary = new CallSummary(zoomCalls:zoomStatsLog, totalCallTime:totalTime, totalCalls: zoomStatsLog.size())
+        jsonGen.toJson(callSummary)  //TODO: maybe an HTML output option?
     }
 
     void toggleIndicator(Request request){
