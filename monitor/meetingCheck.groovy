@@ -22,9 +22,15 @@ def checkZoomStatus(){
 
 
 def callRpiApi(boolean status){
+    try{
+
+
     def rpiApi = new URL("http://192.168.1.31:4567/zoom/status/update?callStatus=${(status)?'on':'off'}")
     println "URL="+rpiApi
     def conn = rpiApi.openConnection()
     conn.requestMethod = 'POST'
     assert conn.responseCode == 200
+    } catch(Exception e ){
+        println "Failed to connect to the Pi. Check connections! Error: ${e}"
+    }
 }
