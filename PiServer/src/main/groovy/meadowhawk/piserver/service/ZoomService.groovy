@@ -19,7 +19,7 @@ class ZoomService {
     GIPOService gipoService = new GIPOService()
 
     String getStatusInfo(){
-        jsonGen.toJson(zoomStatsLog)
+        jsonGen.toJson(zoomStatsLog)  //TODO: Expand results to included total time and maybe an HTML output option
     }
 
     void toggleIndicator(Request request){
