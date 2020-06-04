@@ -1,5 +1,3 @@
-import java.io.InputStreamReader
-
 
 new Timer().schedule({
     checkZoomStatus()
@@ -18,13 +16,8 @@ def checkZoomStatus(){
     callRpiApi(zoomIsOn)
 }
 
-
-
-
 def callRpiApi(boolean status){
     try{
-
-
     def rpiApi = new URL("http://192.168.1.31:4567/zoom/status/update?callStatus=${(status)?'on':'off'}")
     println "URL="+rpiApi
     def conn = rpiApi.openConnection()
