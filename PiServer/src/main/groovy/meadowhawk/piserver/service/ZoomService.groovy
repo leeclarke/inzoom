@@ -2,10 +2,13 @@ package meadowhawk.piserver.service
 
 import groovy.json.JsonGenerator
 import groovy.util.logging.Slf4j
+import io.prometheus.client.CollectorRegistry
+import io.prometheus.client.exporter.common.TextFormat
 import meadowhawk.piserver.model.CallSummary
 import meadowhawk.piserver.model.ZoomCallStats
 import static  meadowhawk.piserver.util.DurationUtil.*
 import spark.Request
+import spark.Response
 
 import java.time.Duration
 import java.time.LocalDateTime
@@ -18,6 +21,7 @@ class ZoomService {
     List<ZoomCallStats> zoomStatsLog = new LinkedList<>()
     ZoomCallStats currentCall
     GIPOService gipoService = new GIPOService()
+    final CollectorRegistry registry = CollectorRegistry.defaultRegistry
 
     String getStatusInfo(){
         def totalTime = zoomStatsLog.sum({ it.totalTime})
@@ -28,6 +32,7 @@ class ZoomService {
     void toggleIndicator(Request request){
 
         def status =  request.queryParamsValues(ZoomService.STATUS)?.contains("on") ? "on": "off"
+        PrometheusService.callStatus.set((status=="on")?1:0)
         if(status == "on"){
             log.info("Status=ON")
             if(currentCall == null) {
@@ -46,10 +51,13 @@ class ZoomService {
         if(currentCall) {
             currentCall.endCall()
             zoomStatsLog.add(currentCall)
+            PrometheusService.callReqs.inc()
             currentCall = null
         }
         gipoService.toggleLED(false)
     }
+
+
 
     def jsonGen = new JsonGenerator.Options()
             .addConverter(LocalDateTime) {
